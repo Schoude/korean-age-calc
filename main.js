@@ -9,6 +9,8 @@ let birthday = null;
 let thisYearBday = null;
 
 const datepicker = document.querySelector('#birthday-picker');
+const formControlBtn = document.querySelector('.form-control-btn');
+
 const calculateAgeBtn = document.querySelector('.calculate-age');
 const deleteValuesBtn = document.querySelector('.delete-values');
 const resultContainer = document.querySelector('.result');
@@ -16,6 +18,7 @@ const ageValueWesternElement = document.querySelector('.age-value-western');
 const ageValueKoreanElement = document.querySelector('.age-value-korean');
 
 if (westernAge == null) {
+  formControlBtn.style.display = 'none';
   calculateAgeBtn.setAttribute('disabled', true);
   deleteValuesBtn.setAttribute('disabled', true);
   resultContainer.style.display = 'none';
@@ -27,11 +30,12 @@ datepicker.addEventListener('input', event => {
   westernAge = getAge(birthdayClear);
 
   thisYearBday = setCurrentYear(birthdayClear);
-  if (thisYearBday == null) {
+  if (thisYearBday == null || event.target.value === '') {
     calculateAgeBtn.setAttribute('disabled', true);
     deleteValuesBtn.setAttribute('disabled', true);
     resultContainer.style.display = 'none';
   } else {
+    formControlBtn.style.display = 'flex';
     calculateAgeBtn.removeAttribute('disabled');
     deleteValuesBtn.removeAttribute('disabled');
   }
@@ -60,11 +64,6 @@ function getKoreanAge(westernAge, hasBdayPassed) {
 
 calculateAgeBtn.addEventListener('click', e => {
   e.preventDefault();
-  console.log('western age: ', westernAge);
-  console.log(
-    'korean age: ',
-    getKoreanAge(westernAge, hasBirthDayPassed(thisYearBday))
-  );
   resultContainer.style.display = 'block';
   ageValueWesternElement.innerText = westernAge;
   ageValueKoreanElement.innerText = getKoreanAge(
@@ -81,6 +80,7 @@ deleteValuesBtn.addEventListener('click', e => {
   ageValueWesternElement.innerText = westernAge;
   ageValueKoreanElement.innerText = koreanAge;
 
+  formControlBtn.style.display = 'none';
   calculateAgeBtn.setAttribute('disabled', true);
   deleteValuesBtn.setAttribute('disabled', true);
   resultContainer.style.display = 'none';

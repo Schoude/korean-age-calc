@@ -23,8 +23,6 @@ body {
   margin: 0;
   font-family: 'Google Sans', 'Arial';
   background-color: var(--korean-green);
-  background: linear-gradient(to bottom, var(--korean-green) 0%, #40a832 100%);
-  height: 100vh;
 }
 
 .form-container {
@@ -73,8 +71,20 @@ input[type='date'] {
 .form-control-btn button.btn {
   cursor: pointer;
   padding: 10px 15px;
+  box-sizing: border-box;
   font-family: 'Google Sans', 'Arial';
   font-size: 14px;
+}
+
+.form-control-btn button.calculate-age {
+  background: var(--korean-tileblue);
+  color: white;
+  border: 3px solid var(--korean-green);
+}
+
+.form-control-btn button.delete-values {
+  background: var(--korea-lightred);
+  border: 3px solid var(--korean-green);
 }
 
 .result {
@@ -88,6 +98,14 @@ input[type='date'] {
   padding: 10px 40px;
   margin-top: 30px;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+.age-value-korean {
+  font-size: 30px;
+}
+
+.age-value-western {
+  font-size: 25px;
 }
 
 @media only screen and (min-width: 250px) and (max-width: 500px) {
