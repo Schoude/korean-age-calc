@@ -1,61 +1,119 @@
+:root {
+  --korea-red: #ad3432;
+  --korea-lightred: #faaca0;
+  --korean-green: #4faa44;
+  --korean-tileblue: #52597e;
+}
+
 @font-face {
   font-family: 'Google Sans';
   font-style: normal;
   font-weight: 400;
-  src: local('Google Sans Regular'), local('GoogleSans-Regular'), url(https://fonts.gstatic.com/s/googlesans/v14/4UaGrENHsxJlGDuGo1OIlL3Owp4.woff2) format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  src: local('Google Sans Regular'), local('GoogleSans-Regular'),
+    url(https://fonts.gstatic.com/s/googlesans/v14/4UaGrENHsxJlGDuGo1OIlL3Owp4.woff2)
+      format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215,
+    U+FEFF, U+FFFD;
 }
 
 html,
 body {
-    padding: 0;
-    margin: 0;
-    font-family: 'Google Sans', 'Arial';
+  padding: 0;
+  margin: 0;
+  font-family: 'Google Sans', 'Arial';
+  background-color: var(--korean-green);
 }
 
 .form-container {
-    padding: 30px 40px;
-    width: 300px;
-    margin: 0 auto;
-    border-radius: 7px;
-    background-color: lightgrey;
-    box-shadow: 0 0 12px rgba(0, 0, 0 , .25);
+  padding: 30px 40px;
+  width: 300px;
+  margin: 0 auto;
+  border-radius: 7px;
+  background-color: var(--korea-red);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+  color: white;
 }
 
 .form-container label {
-    font-size: 20px;
-    user-select: none;
+  font-size: 20px;
+  user-select: none;
 }
 
-.form-container  input {
-    width: 100%;
-    border: none;
-    margin-top: 5px;
-    padding: 6px;
-    font-size: 16px;
-    box-sizing: border-box;
+.form-container input {
+  width: 100%;
+  border: none;
+  margin-top: 5px;
+  padding: 6px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+input[type='date'] {
+  font-family: 'Google Sans', 'Arial';
 }
 
 .form-control {
-    margin-bottom: 25px
+  margin-bottom: 25px;
 }
 
 .form-control:last-child {
-    margin-bottom: 0;
-    padding-top: 5px;
+  margin-bottom: 0;
+  padding-top: 5px;
 }
 
 .form-control-btn {
-    display: flex;
-    justify-content: space-between;
-    user-select: none;
+  display: flex;
+  justify-content: space-between;
+  user-select: none;
 }
 
-.form-control-btn button {
-    cursor: pointer;
-    padding: 10px 15px;
-    font-family: 'Google Sans', 'Arial';
-    font-size: 14px;
+.form-control-btn button.btn {
+  cursor: pointer;
+  padding: 10px 15px;
+  box-sizing: border-box;
+  font-family: 'Google Sans', 'Arial';
+  font-size: 14px;
 }
+
+.form-control-btn button.calculate-age {
+  background: var(--korean-tileblue);
+  color: white;
+  border: 3px solid var(--korean-green);
+}
+
+.form-control-btn button.delete-values {
+  background: var(--korea-lightred);
+  border: 3px solid var(--korean-green);
+}
+
+.result {
+  background-color: var(--korea-red);
+  color: white;
+  user-select: none;
+  text-align: center;
+  margin: 0 auto;
+  width: 300px;
+  border-radius: 7px;
+  padding: 10px 40px;
+  margin-top: 30px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+.age-value-korean {
+  font-size: 30px;
+}
+
+.age-value-western {
+  font-size: 25px;
+}
+
+@media only screen and (min-width: 250px) and (max-width: 500px) {
+  .form-container,
+  .result {
+    border-radius: 0px;
+  }
+}
+
 
 /*# sourceMappingURL=/style.e308ff8e.css.map */

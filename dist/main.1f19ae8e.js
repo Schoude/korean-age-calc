@@ -117,56 +117,106 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"main.js":[function(require,module,exports) {
-var now = Date.now();
-var nowClear = new Date(now);
-var nowLocalDate = nowClear.toLocaleDateString();
-var westernAge = null;
-var birthdayClear = null;
-var birthday = null;
-var thisYearBday = null;
-var datepicker = document.querySelector('#birthday-picker');
-var ageInput = document.querySelector('.age-input');
-ageInput.addEventListener('change', function (event) {
-  westernAge = event.target.value;
-});
-datepicker.addEventListener('change', function (event) {
-  birthdayClear = new Date(event.target.value);
-  birthday = Date.parse(event.target.value);
-  console.log('picked birthday:', birthday);
-  setCurrentYear(birthdayClear);
-  hasBdayAlreadyPassed();
-});
+})({"korean_age.js":[function(require,module,exports) {
+// helper functions
+function getAge(birthday) {
+  var ageDifMs = Date.now() - birthday.getTime();
+  var ageDate = new Date(ageDifMs); // miliseconds from epoch
 
-function setCurrentYear(bDayClear) {
+  return Math.abs(ageDate.getUTCFullYear() - 1970);
+}
+
+function setCurrentYear(birthday) {
   var thisYear = new Date(Date.now()).getFullYear();
-  var formatBday = bDayClear.toLocaleDateString();
-  thisYearBday = formatBday.replace(/\d{4}/g, thisYear);
-  console.log(formatBday, thisYearBday);
-} // check if birthday already pased, wenn true, dann Alter + 1, ansonsten Alter + 2
+  var thisYearBdayMs = birthday.setFullYear(thisYear);
+  return new Date(thisYearBdayMs);
+}
+
+function hasBirthDayPassed(thisYearBday) {
+  var now = new Date();
+  now.setHours(0, 0, 0, 0);
+  return now > thisYearBday;
+}
+
+function getKoreanAge(westernAge, hasBdayPassed) {
+  return hasBdayPassed ? Number(westernAge) + 1 : Number(westernAge) + 2;
+} // main function for calculating the korean age
+
+/**
+ * @param {Date} birthday
+ * @example Tue Nov 13 1990 00:00:00 GMT+0100 (Mitteleuropäische Normalzeit)
+ * @returns {number[]}
+ */
 
 
-function hasBdayAlreadyPassed() {
-  var thisYearBdayMs = Date.parse(Date(thisYearBday));
-  var difference = thisYearBdayMs - now;
-  console.log('nowLocalDate', nowLocalDate);
-  console.log(thisYearBday == nowLocalDate ? true : false); // if (thisYearBdayMs > now) {
-  //     console.log(thisYearBdayMs,  now,'B-Day not yet passed');
-  // } else if (thisYearBdayMs < now) {
-  //     console.log('B-Day already passed');
-  // }    
-} // wenn true, dann Alter + 1, ansonsten Alter + 2
-// function isLastDayOfTheYear(now, thisYear) {
-//   const lastDayOfYear = new Date(`${thisYear}, 12, 31`);
-//   if (now - Date.parse(lastDayOfYear) < 0 ) {
-//       console.log('today not last day of year');
-//       return false;
-//   } else if (now - Date.parse(lastDayOfYear) === 0 ) {
-//     console.log('last day of year');
-//     return true
-//   } 
-// }
-},{}],"../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+function calcKoreanAge(birthday) {
+  var westernAge = getAge(birthday);
+  var thisYearBday = setCurrentYear(birthday);
+  getKoreanAge(westernAge, hasBirthDayPassed(thisYearBday));
+  return {
+    westernAge: westernAge,
+    koreanAge: getKoreanAge(westernAge, hasBirthDayPassed(thisYearBday))
+  };
+}
+
+module.exports.calcKoreanAge = calcKoreanAge;
+},{}],"main.js":[function(require,module,exports) {
+"use strict";
+
+var _korean_age = require("./korean_age");
+
+var westernAge = null;
+var koreanAge = null;
+var birthdayClear = null;
+var datepicker = document.querySelector('#birthday-picker');
+var formControlBtn = document.querySelector('.form-control-btn');
+var calculateAgeBtn = document.querySelector('.calculate-age');
+var deleteValuesBtn = document.querySelector('.delete-values');
+var resultContainer = document.querySelector('.result');
+var ageValueWesternElement = document.querySelector('.age-value-western');
+var ageValueKoreanElement = document.querySelector('.age-value-korean');
+
+if (westernAge == null) {
+  formControlBtn.style.display = 'none';
+  calculateAgeBtn.setAttribute('disabled', true);
+  deleteValuesBtn.setAttribute('disabled', true);
+  resultContainer.style.display = 'none';
+}
+
+datepicker.addEventListener('input', function (event) {
+  birthdayClear = new Date(event.target.value);
+  birthdayClear.setHours(0, 0, 0, 0);
+
+  if (birthdayClear == null || event.target.value === '') {
+    calculateAgeBtn.setAttribute('disabled', true);
+    deleteValuesBtn.setAttribute('disabled', true);
+    resultContainer.style.display = 'none';
+  } else {
+    formControlBtn.style.display = 'flex';
+    calculateAgeBtn.removeAttribute('disabled');
+    deleteValuesBtn.removeAttribute('disabled');
+  }
+});
+calculateAgeBtn.addEventListener('click', function (e) {
+  e.preventDefault();
+  var ages = (0, _korean_age.calcKoreanAge)(birthdayClear);
+  resultContainer.style.display = 'block';
+  ageValueWesternElement.innerText = ages.westernAge;
+  ageValueKoreanElement.innerText = ages.koreanAge;
+});
+deleteValuesBtn.addEventListener('click', function (e) {
+  e.preventDefault();
+  datepicker.value = null;
+  westernAge = null;
+  koreanAge = null;
+  ageValueWesternElement.innerText = westernAge;
+  ageValueKoreanElement.innerText = koreanAge;
+  formControlBtn.style.display = 'none';
+  calculateAgeBtn.setAttribute('disabled', true);
+  deleteValuesBtn.setAttribute('disabled', true);
+  resultContainer.style.display = 'none';
+});
+},{"./korean_age":"korean_age.js"}],"../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -194,7 +244,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61259" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57700" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

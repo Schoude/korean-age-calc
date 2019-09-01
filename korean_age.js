@@ -27,7 +27,7 @@ function getKoreanAge(westernAge, hasBdayPassed) {
  * @example Tue Nov 13 1990 00:00:00 GMT+0100 (Mitteleuropäische Normalzeit)
  * @returns {number[]}
  */
-export function calcKoreanAge(birthday) {
+function calcKoreanAge(birthday) {
   let westernAge = getAge(birthday);
   let thisYearBday = setCurrentYear(birthday);
   getKoreanAge(westernAge, hasBirthDayPassed(thisYearBday));
@@ -36,3 +36,5 @@ export function calcKoreanAge(birthday) {
     koreanAge: getKoreanAge(westernAge, hasBirthDayPassed(thisYearBday))
   };
 }
+
+module.exports.calcKoreanAge = calcKoreanAge;
