@@ -1,3 +1,5 @@
+import { calcKoreanAge } from 'korean-age';
+
 let westernAge = null;
 let koreanAge = null;
 let birthdayClear = null;
@@ -9,8 +11,6 @@ const deleteValuesBtn = document.querySelector('.delete-values');
 const resultContainer = document.querySelector('.result');
 const ageValueWesternElement = document.querySelector('.age-value-western');
 const ageValueKoreanElement = document.querySelector('.age-value-korean');
-
-import { calcKoreanAge } from './korean_age';
 
 if (westernAge == null) {
   formControlBtn.style.display = 'none';
